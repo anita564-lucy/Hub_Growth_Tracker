@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hub Growth Tracker</title>
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #bb86fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+        }
+        h1 { text-align: center; text-shadow: 0 0 10px #8a2be2; }
+        .milestone-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #03dac6;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            transition: 0.3s;
+        }
+        .milestone-card:hover {
+            transform: translateX(10px);
+            background: rgba(138, 43, 226, 0.1);
+        }
+        .category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #03dac6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome, Anita!</h1>
+        <p style="text-align: center; color: #ddd;">Swahilipot Growth Tracker</p>
+        <hr style="border: 0.5px solid rgba(255,255,255,0.1);">
+        
+        <div id="milestone-list">
+            <p style="text-align: center;">Scanning the database...</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadMilestones() {
+            try {
+                // Fetching data from your Django API
+                const response = await fetch('/api/milestones/');
+                const data = await response.json();
+                const container = document.getElementById('milestone-list');
+                
+                container.innerHTML = ''; // Clear the 'Scanning' message
+
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'milestone-card';
+                    div.innerHTML = `
+                        <div class="category">${item.category}</div>
+                        <strong style="font-size: 1.1rem;">${item.title}</strong>
+                        <p style="margin: 5px 0 0; color: #bbb; font-size: 0.9rem;">${item.description}</p>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (error) {
+                document.getElementById('milestone-list').innerHTML = "Error connecting to backend.";
+            }
+        }
+
+        // Start the engine!
+        loadMilestones();
+    </script>
+</body>
+</html>
