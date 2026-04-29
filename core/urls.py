@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tracker import views # Make sure this is here
+from tracker import views 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
     path('api/milestones/', views.milestone_list_api, name='milestone_list_api'),
+    
+    # ADD THIS LINE HERE:
+    path('api/milestones/delete/<int:pk>/', views.delete_milestone_api, name='delete_milestone_api'),
 ]

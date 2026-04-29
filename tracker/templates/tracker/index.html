@@ -33,6 +33,7 @@
             padding: 15px;
             border-radius: 0 10px 10px 0;
             transition: 0.3s;
+            position: relative; /* Needed for the delete button positioning */
         }
         .milestone-card:hover {
             transform: translateX(10px);
@@ -45,6 +46,19 @@
             color: #03dac6;
             font-weight: bold;
         }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+        .delete-btn:hover { opacity: 1; }
     </style>
 </head>
 <body>
@@ -57,7 +71,7 @@
         
         <div style="margin-bottom: 20px;">
             <input type="text" id="new-title" placeholder="Milestone Title" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;">
-            <input type="text" id="new-category" placeholder="Category (e.g., Coding)" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;">
+            <input type="text" id="new-category" placeholder="Category" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;">
             <textarea id="new-desc" placeholder="Brief description..." style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;"></textarea>
             
             <button onclick="addMilestone()" style="width: 100%; padding: 12px; background: #8a2be2; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
@@ -71,14 +85,12 @@
    </div>
 
     <script>
-        // FIXED: The list loader now actually draws the cards!
         async function loadMilestones() {
             try {
                 const response = await fetch('/api/milestones/');
                 const data = await response.json();
                 const list = document.getElementById('milestone-list');
-                
-                list.innerHTML = ''; // Clear the "Scanning..." message
+                list.innerHTML = ''; 
 
                 data.forEach(m => {
                     list.innerHTML += `
@@ -86,6 +98,7 @@
                             <div class="category">${m.category}</div>
                             <h3 style="margin: 5px 0; color: #d8b4fe;">${m.title}</h3>
                             <p style="margin: 0; color: #e2e8f0; font-size: 0.9em;">${m.description}</p>
+                            <button class="delete-btn" onclick="deleteMilestone(${m.id})">[X] Delete</button>
                         </div>
                     `;
                 });
@@ -94,7 +107,6 @@
             }
         }
 
-        // The function to send new data back to Django
         async function addMilestone() {
             const title = document.getElementById('new-title').value;
             const category = document.getElementById('new-category').value;
@@ -120,7 +132,20 @@
             }
         }
 
-        // Run this when the page first loads
+        async function deleteMilestone(id) {
+            if (!confirm("Are you sure you want to delete this achievement?")) return;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            const response = await fetch(`/api/milestones/delete/${id}/`, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken }
+            });
+
+            if (response.ok) {
+                loadMilestones(); 
+            }
+        }
+
         loadMilestones();
     </script>
 </body>
