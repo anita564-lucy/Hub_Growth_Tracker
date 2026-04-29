@@ -43,47 +43,84 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #03dac6;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
+    {% csrf_token %}
     <div class="container">
         <h1>Welcome, Anita!</h1>
         <p style="text-align: center; color: #ddd;">Swahilipot Growth Tracker</p>
         <hr style="border: 0.5px solid rgba(255,255,255,0.1);">
         
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="new-title" placeholder="Milestone Title" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;">
+            <input type="text" id="new-category" placeholder="Category (e.g., Coding)" style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;">
+            <textarea id="new-desc" placeholder="Brief description..." style="width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #8a2be2; background: #1a1d23; color: white;"></textarea>
+            
+            <button onclick="addMilestone()" style="width: 100%; padding: 12px; background: #8a2be2; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                + Add New Milestone
+            </button>
+        </div>
+
         <div id="milestone-list">
             <p style="text-align: center;">Scanning the database...</p>
         </div>
-    </div>
+   </div>
 
     <script>
+        // FIXED: The list loader now actually draws the cards!
         async function loadMilestones() {
             try {
-                // Fetching data from your Django API
                 const response = await fetch('/api/milestones/');
                 const data = await response.json();
-                const container = document.getElementById('milestone-list');
+                const list = document.getElementById('milestone-list');
                 
-                container.innerHTML = ''; // Clear the 'Scanning' message
+                list.innerHTML = ''; // Clear the "Scanning..." message
 
-                data.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'milestone-card';
-                    div.innerHTML = `
-                        <div class="category">${item.category}</div>
-                        <strong style="font-size: 1.1rem;">${item.title}</strong>
-                        <p style="margin: 5px 0 0; color: #bbb; font-size: 0.9rem;">${item.description}</p>
+                data.forEach(m => {
+                    list.innerHTML += `
+                        <div class="milestone-card">
+                            <div class="category">${m.category}</div>
+                            <h3 style="margin: 5px 0; color: #d8b4fe;">${m.title}</h3>
+                            <p style="margin: 0; color: #e2e8f0; font-size: 0.9em;">${m.description}</p>
+                        </div>
                     `;
-                    container.appendChild(div);
                 });
             } catch (error) {
-                document.getElementById('milestone-list').innerHTML = "Error connecting to backend.";
+                console.error("Error:", error);
             }
         }
 
-        // Start the engine!
+        // The function to send new data back to Django
+        async function addMilestone() {
+            const title = document.getElementById('new-title').value;
+            const category = document.getElementById('new-category').value;
+            const description = document.getElementById('new-desc').value;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            if (!title) return alert("Please add a title!");
+
+            const response = await fetch('/api/milestones/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ title, category, description })
+            });
+
+            if (response.ok) {
+                document.getElementById('new-title').value = '';
+                document.getElementById('new-category').value = '';
+                document.getElementById('new-desc').value = '';
+                loadMilestones(); 
+            }
+        }
+
+        // Run this when the page first loads
         loadMilestones();
     </script>
 </body>
