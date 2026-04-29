@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse # <--- Ensure this is here!
 from .models import Milestone
 import json
-
 def milestone_list_api(request):
     if request.method == 'POST':
         data = json.loads(request.body)
