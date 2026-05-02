@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hub Growth Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -68,6 +69,19 @@
         .delete-btn { color: #ff4d4d; }
         .edit-btn   { color: #03dac6; }
         .delete-btn:hover, .edit-btn:hover { opacity: 1; }
+        .chart-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(138,43,226,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 15px 0;
+        }
+        .chart-box h3 {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 12px;
+            text-align: center;
+        }
         .modal-overlay {
             display: none;
             position: fixed; inset: 0;
@@ -130,6 +144,12 @@
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
 
+        <!-- Progress Chart -->
+        <div class="chart-box">
+            <h3>📊 Milestones per Category</h3>
+            <canvas id="progressChart" height="180"></canvas>
+        </div>
+
         <!-- Filters -->
         <div class="filters">
             <select id="month-filter" onchange="loadMilestones()">
@@ -175,6 +195,7 @@
 
     <script>
         let allMilestones = [];
+        let chartInstance = null;
 
         function getCsrf() {
             return document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -184,6 +205,44 @@
             t.textContent = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function renderChart(data) {
+            const counts = {};
+            data.forEach(m => {
+                const cat = m.category || 'General';
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+            const labels = Object.keys(counts);
+            const values = Object.values(counts);
+
+            if (chartInstance) chartInstance.destroy();
+
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Milestones',
+                        data: values,
+                        backgroundColor: 'rgba(138, 43, 226, 0.6)',
+                        borderColor: '#8a2be2',
+                        borderWidth: 2,
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#bb86fc' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#bb86fc', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
         }
 
         async function loadMilestones() {
@@ -207,6 +266,9 @@
             });
 
             let data = allMilestones;
+
+            // Render chart with ALL milestones
+            renderChart(allMilestones);
 
             // Filter by month
             if (month) {
