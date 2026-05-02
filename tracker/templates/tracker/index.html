@@ -39,6 +39,10 @@
             transition: background 0.2s;
         }
         button.main-btn:hover { background: #7a1bd2; }
+        .filters {
+            display: flex; gap: 10px; margin: 15px 0;
+        }
+        .filters select { margin-bottom: 0; }
         .milestone-card {
             background: rgba(255, 255, 255, 0.03);
             border-left: 4px solid #03dac6;
@@ -126,8 +130,8 @@
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
 
-        <!-- Date Filter -->
-        <div style="margin: 15px 0;">
+        <!-- Filters -->
+        <div class="filters">
             <select id="month-filter" onchange="loadMilestones()">
                 <option value="">📅 All Months</option>
                 <option value="01">January</option>
@@ -142,6 +146,9 @@
                 <option value="10">October</option>
                 <option value="11">November</option>
                 <option value="12">December</option>
+            </select>
+            <select id="category-filter" onchange="loadMilestones()">
+                <option value="">🏷️ All Categories</option>
             </select>
         </div>
 
@@ -167,6 +174,8 @@
     <div id="toast"></div>
 
     <script>
+        let allMilestones = [];
+
         function getCsrf() {
             return document.querySelector('[name=csrfmiddlewaretoken]').value;
         }
@@ -176,17 +185,41 @@
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
         }
-        async function loadMilestones() {
-            const month = document.getElementById('month-filter').value;
-            const res = await fetch('/api/milestones/');
-            let data = await res.json();
 
+        async function loadMilestones() {
+            const month    = document.getElementById('month-filter').value;
+            const category = document.getElementById('category-filter').value;
+
+            const res = await fetch('/api/milestones/');
+            allMilestones = await res.json();
+
+            // Populate category dropdown
+            const categories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))];
+            const catSelect = document.getElementById('category-filter');
+            const currentCat = catSelect.value;
+            catSelect.innerHTML = '<option value="">🏷️ All Categories</option>';
+            categories.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                if (c === currentCat) opt.selected = true;
+                catSelect.appendChild(opt);
+            });
+
+            let data = allMilestones;
+
+            // Filter by month
             if (month) {
                 data = data.filter(m => {
                     const d = new Date(m.date_created);
                     const mm = String(d.getMonth() + 1).padStart(2, '0');
                     return mm === month;
                 });
+            }
+
+            // Filter by category
+            if (category) {
+                data = data.filter(m => m.category === category);
             }
 
             const list = document.getElementById('milestone-list');
@@ -207,6 +240,7 @@
                 </div>
             `).join('');
         }
+
         function escQ(str) {
             return (str || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
         }
