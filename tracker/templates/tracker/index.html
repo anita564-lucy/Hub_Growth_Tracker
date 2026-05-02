@@ -25,7 +25,7 @@
         }
         h1 { text-align: center; margin-bottom: 4px; }
         h1 + p { text-align: center; margin-bottom: 20px; color: #888; }
-        input, textarea {
+        input, textarea, select {
             width: 100%; margin-bottom: 10px; padding: 10px;
             border-radius: 5px; border: 1px solid #8a2be2;
             background: #1a1d23; color: white;
@@ -114,16 +114,37 @@
     {% csrf_token %}
     <div class="container">
         <h1>Welcome, Anita!</h1>
-<div style="text-align:center; margin-bottom: 10px;">
-    <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:bold;">🚪 Logout</a>
-</div>
+        <div style="text-align:center; margin-bottom: 10px;">
+            <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:bold;">🚪 Logout</a>
+        </div>
         <p>Swahilipot Growth Tracker</p>
+
         <div id="form-area">
             <input type="text" id="new-title" placeholder="Milestone Title">
             <input type="text" id="new-category" placeholder="Category (e.g. Django, Frontend)">
             <textarea id="new-desc" placeholder="Brief description..."></textarea>
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
+
+        <!-- Date Filter -->
+        <div style="margin: 15px 0;">
+            <select id="month-filter" onchange="loadMilestones()">
+                <option value="">📅 All Months</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+
         <div id="milestone-list">
             <p style="text-align:center; margin-top:20px; color:#555;">Scanning the database...</p>
         </div>
@@ -156,11 +177,21 @@
             setTimeout(() => t.classList.remove('show'), 2500);
         }
         async function loadMilestones() {
-            const res  = await fetch('/api/milestones/');
-            const data = await res.json();
+            const month = document.getElementById('month-filter').value;
+            const res = await fetch('/api/milestones/');
+            let data = await res.json();
+
+            if (month) {
+                data = data.filter(m => {
+                    const d = new Date(m.date_created);
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    return mm === month;
+                });
+            }
+
             const list = document.getElementById('milestone-list');
             if (data.length === 0) {
-                list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones yet — add one above!</p>';
+                list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found!</p>';
                 return;
             }
             list.innerHTML = data.map(m => `
@@ -168,6 +199,7 @@
                     <div class="category">${m.category || 'General'}</div>
                     <h3 style="margin:5px 0 4px;color:#d8b4fe;">${m.title}</h3>
                     <p style="color:#e2e8f0;font-size:0.9em;">${m.description}</p>
+                    <small style="color:#555;">${new Date(m.date_created).toLocaleDateString()}</small>
                     <div class="card-actions">
                         <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}')">[✎] Edit</button>
                         <button class="delete-btn" onclick="deleteMilestone(${m.id})">[✕] Delete</button>
