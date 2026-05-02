@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Hub Growth Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -40,15 +41,12 @@
             transition: background 0.2s;
         }
         button.main-btn:hover { background: #7a1bd2; }
-        .filters {
-            display: flex; gap: 10px; margin: 15px 0;
-        }
+        .filters { display: flex; gap: 10px; margin: 15px 0; }
         .filters select { margin-bottom: 0; }
         .milestone-card {
             background: rgba(255, 255, 255, 0.03);
             border-left: 4px solid #03dac6;
-            margin: 15px 0;
-            padding: 15px;
+            margin: 15px 0; padding: 15px;
             border-radius: 0 10px 10px 0;
             position: relative;
         }
@@ -73,15 +71,31 @@
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(138,43,226,0.2);
             border-radius: 12px;
-            padding: 16px;
-            margin: 15px 0;
+            padding: 16px; margin: 15px 0;
         }
         .chart-box h3 {
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 12px;
-            text-align: center;
+            font-size: 0.85rem; color: #888;
+            margin-bottom: 12px; text-align: center;
         }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(138,43,226,0.2);
+        }
+        .social-links a {
+            color: #bb86fc;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .social-links a:hover { transform: scale(1.2); }
+        .social-links a.instagram:hover { color: #e1306c; }
+        .social-links a.github:hover    { color: #ffffff; }
+        .social-links a.twitter:hover   { color: #1da1f2; }
+        .social-links a.linkedin:hover  { color: #0077b5; }
         .modal-overlay {
             display: none;
             position: fixed; inset: 0;
@@ -94,10 +108,8 @@
         .modal {
             background: #12151c;
             border: 1px solid rgba(138, 43, 226, 0.5);
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 460px;
+            border-radius: 16px; padding: 30px;
+            width: 90%; max-width: 460px;
             animation: popIn 0.2s ease;
         }
         @keyframes popIn {
@@ -122,8 +134,7 @@
             padding: 10px 22px; border-radius: 30px;
             font-weight: bold; font-size: 0.85rem;
             opacity: 0; pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 200;
+            transition: opacity 0.3s; z-index: 200;
         }
         #toast.show { opacity: 1; }
     </style>
@@ -175,6 +186,22 @@
         <div id="milestone-list">
             <p style="text-align:center; margin-top:20px; color:#555;">Scanning the database...</p>
         </div>
+
+        <!-- Social Media Links -->
+        <div class="social-links">
+            <a href="https://instagram.com/being_anita1" target="_blank" class="instagram" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://github.com/anita564-lucy" target="_blank" class="github" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://twitter.com/LucyAnita194615" target="_blank" class="twitter" title="Twitter/X">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/lucy-odhiambo-65a123277" target="_blank" class="linkedin" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
     </div>
 
     <div class="modal-overlay" id="editModal">
@@ -206,7 +233,6 @@
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
         }
-
         function renderChart(data) {
             const counts = {};
             data.forEach(m => {
@@ -215,9 +241,7 @@
             });
             const labels = Object.keys(counts);
             const values = Object.values(counts);
-
             if (chartInstance) chartInstance.destroy();
-
             const ctx = document.getElementById('progressChart').getContext('2d');
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -234,9 +258,7 @@
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         x: { ticks: { color: '#bb86fc' }, grid: { color: 'rgba(255,255,255,0.05)' } },
                         y: { ticks: { color: '#bb86fc', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }
@@ -244,33 +266,23 @@
                 }
             });
         }
-
         async function loadMilestones() {
             const month    = document.getElementById('month-filter').value;
             const category = document.getElementById('category-filter').value;
-
             const res = await fetch('/api/milestones/');
             allMilestones = await res.json();
-
-            // Populate category dropdown
             const categories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))];
             const catSelect = document.getElementById('category-filter');
             const currentCat = catSelect.value;
             catSelect.innerHTML = '<option value="">🏷️ All Categories</option>';
             categories.forEach(c => {
                 const opt = document.createElement('option');
-                opt.value = c;
-                opt.textContent = c;
+                opt.value = c; opt.textContent = c;
                 if (c === currentCat) opt.selected = true;
                 catSelect.appendChild(opt);
             });
-
             let data = allMilestones;
-
-            // Render chart with ALL milestones
             renderChart(allMilestones);
-
-            // Filter by month
             if (month) {
                 data = data.filter(m => {
                     const d = new Date(m.date_created);
@@ -278,12 +290,9 @@
                     return mm === month;
                 });
             }
-
-            // Filter by category
             if (category) {
                 data = data.filter(m => m.category === category);
             }
-
             const list = document.getElementById('milestone-list');
             if (data.length === 0) {
                 list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found!</p>';
@@ -302,7 +311,6 @@
                 </div>
             `).join('');
         }
-
         function escQ(str) {
             return (str || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
         }
