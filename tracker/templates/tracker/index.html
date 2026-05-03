@@ -5,6 +5,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <title>Hub Growth Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -174,10 +175,10 @@
         <div class="card">
             <h1>Welcome, Anita!</h1>
             <p class="subtitle">Swahilipot Hub Growth Tracker</p>
-           <div style="text-align:center; display:flex; justify-content:center; gap:20px;">
-    <a href="/profile/" style="color:#03dac6; font-size:0.85rem; text-decoration:none; font-weight:600;">👤 My Profile</a>
-    <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">🚪 Logout</a>
-</div>
+            <div style="text-align:center; display:flex; justify-content:center; gap:20px;">
+                <a href="/profile/" style="color:#03dac6; font-size:0.85rem; text-decoration:none; font-weight:600;">👤 My Profile</a>
+                <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">🚪 Logout</a>
+            </div>
         </div>
 
         <!-- Add Milestone Card -->
@@ -197,9 +198,12 @@
 
         <!-- Milestones Card -->
         <div class="card">
-            <p class="section-title">🏆 Your Milestones</p>
-<div id="milestone-counter" style="text-align:center; margin-bottom:15px; color:#03dac6; font-size:0.9rem; font-weight:600;"></div>
-<input type="text" id="search-input" placeholder="🔍 Search milestones..." oninput="loadMilestones()" style="margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                <p class="section-title" style="margin-bottom:0;">🏆 Your Milestones</p>
+                <button onclick="exportToPDF()" style="background:#8a2be2; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.8rem; font-weight:600;">📄 Export PDF</button>
+            </div>
+            <div id="milestone-counter" style="text-align:center; margin-bottom:15px; color:#03dac6; font-size:0.9rem; font-weight:600;"></div>
+            <input type="text" id="search-input" placeholder="🔍 Search milestones..." oninput="loadMilestones()">
             <div class="filters">
                 <select id="month-filter" onchange="loadMilestones()">
                     <option value="">📅 All Months</option>
@@ -325,17 +329,17 @@
             });
             let data = allMilestones;
             const search = document.getElementById('search-input').value.toLowerCase();
-if (search) {
-    data = data.filter(m =>
-        m.title.toLowerCase().includes(search) ||
-        m.category.toLowerCase().includes(search) ||
-        m.description.toLowerCase().includes(search)
-    );
-}
+            if (search) {
+                data = data.filter(m =>
+                    m.title.toLowerCase().includes(search) ||
+                    m.category.toLowerCase().includes(search) ||
+                    m.description.toLowerCase().includes(search)
+                );
+            }
             renderChart(allMilestones);
             const totalMilestones = allMilestones.length;
-const totalCategories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))].length;
-document.getElementById('milestone-counter').textContent = `🏆 You have ${totalMilestones} milestones across ${totalCategories} categories!`;
+            const totalCategories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))].length;
+            document.getElementById('milestone-counter').textContent = `🏆 You have ${totalMilestones} milestones across ${totalCategories} categories!`;
             if (month) {
                 data = data.filter(m => {
                     const d = new Date(m.date_created);
@@ -424,6 +428,41 @@ document.getElementById('milestone-counter').textContent = `🏆 You have ${tota
             } else {
                 alert('Something went wrong: ' + data.message);
             }
+        }
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(18);
+            doc.setTextColor(138, 43, 226);
+            doc.text('Hub Growth Tracker - My Milestones', 14, 20);
+
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 28);
+            doc.text(`Total: ${allMilestones.length} milestones`, 14, 34);
+
+            let y = 45;
+            allMilestones.forEach((m, i) => {
+                if (y > 270) { doc.addPage(); y = 20; }
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.setTextColor(30, 30, 30);
+                doc.text(`${i + 1}. ${m.title}`, 14, y);
+                y += 6;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(100);
+                doc.text(`Category: ${m.category || 'General'} | Date: ${new Date(m.date_created).toLocaleDateString()}`, 14, y);
+                y += 5;
+                const descLines = doc.splitTextToSize(m.description || '', 180);
+                doc.text(descLines, 14, y);
+                y += descLines.length * 5 + 8;
+            });
+
+            doc.save('my-milestones.pdf');
+            showToast('📄 PDF downloaded!');
         }
         loadMilestones();
     </script>
