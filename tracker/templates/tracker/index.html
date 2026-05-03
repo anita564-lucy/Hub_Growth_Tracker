@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <title>Hub Growth Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -10,52 +11,87 @@
         body {
             background-color: #0b0e14;
             color: #bb86fc;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             min-height: 100vh;
         }
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(138, 43, 226, 0.3);
-            padding: 30px;
-            border-radius: 20px;
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(138, 43, 226, 0.1);
         }
-        h1 { text-align: center; margin-bottom: 4px; }
-        h1 + p { text-align: center; margin-bottom: 20px; color: #888; }
+        h1 {
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 3.5rem;
+            font-family: 'Pinyon Script', cursive;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
         input, textarea, select {
-            width: 100%; margin-bottom: 10px; padding: 10px;
-            border-radius: 5px; border: 1px solid #8a2be2;
+            width: 100%; margin-bottom: 12px; padding: 12px;
+            border-radius: 8px; border: 1px solid #8a2be2;
             background: #1a1d23; color: white;
-            font-family: inherit;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
         }
-        textarea { resize: vertical; min-height: 70px; }
+        textarea { resize: vertical; min-height: 80px; }
         button.main-btn {
-            width: 100%; padding: 12px; background: #8a2be2;
-            color: white; border: none; border-radius: 5px;
-            cursor: pointer; font-weight: bold;
+            width: 100%; padding: 13px; background: #8a2be2;
+            color: white; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
             transition: background 0.2s;
+            letter-spacing: 0.5px;
         }
         button.main-btn:hover { background: #7a1bd2; }
-        .filters { display: flex; gap: 10px; margin: 15px 0; }
+        .filters { display: flex; gap: 10px; margin-bottom: 10px; }
         .filters select { margin-bottom: 0; }
+        .section-title {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 18px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
         .milestone-card {
             background: rgba(255, 255, 255, 0.03);
             border-left: 4px solid #03dac6;
-            margin: 15px 0; padding: 15px;
-            border-radius: 0 10px 10px 0;
+            margin: 14px 0; padding: 16px;
+            border-radius: 0 12px 12px 0;
             position: relative;
+            transition: transform 0.2s;
         }
+        .milestone-card:hover { transform: translateX(4px); }
         .category {
-            color: #03dac6; font-weight: bold;
-            font-size: 0.7rem; text-transform: uppercase;
+            color: #03dac6; font-weight: 600;
+            font-size: 0.65rem; text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
         .card-actions {
-            position: absolute; top: 10px; right: 10px;
+            position: absolute; top: 12px; right: 12px;
             display: flex; gap: 8px;
         }
         .delete-btn, .edit-btn {
@@ -63,31 +99,20 @@
             cursor: pointer; font-weight: bold;
             font-size: 0.8rem; opacity: 0.6;
             transition: opacity 0.2s;
+            font-family: 'Poppins', sans-serif;
         }
         .delete-btn { color: #ff4d4d; }
         .edit-btn   { color: #03dac6; }
         .delete-btn:hover, .edit-btn:hover { opacity: 1; }
-        .chart-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(138,43,226,0.2);
-            border-radius: 12px;
-            padding: 16px; margin: 15px 0;
-        }
-        .chart-box h3 {
-            font-size: 0.85rem; color: #888;
-            margin-bottom: 12px; text-align: center;
-        }
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 24px;
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(138,43,226,0.2);
+            gap: 28px;
+            padding-top: 10px;
         }
         .social-links a {
             color: #bb86fc;
-            font-size: 1.8rem;
+            font-size: 2rem;
             text-decoration: none;
             transition: transform 0.2s, color 0.2s;
         }
@@ -108,7 +133,7 @@
         .modal {
             background: #12151c;
             border: 1px solid rgba(138, 43, 226, 0.5);
-            border-radius: 16px; padding: 30px;
+            border-radius: 20px; padding: 35px;
             width: 90%; max-width: 460px;
             animation: popIn 0.2s ease;
         }
@@ -116,13 +141,14 @@
             from { transform: scale(0.92); opacity: 0; }
             to   { transform: scale(1);    opacity: 1; }
         }
-        .modal h2 { color: #d8b4fe; margin-bottom: 18px; font-size: 1.1rem; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 4px; }
+        .modal h2 { color: #d8b4fe; margin-bottom: 20px; font-size: 1.1rem; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 6px; }
         .modal-actions button {
-            flex: 1; padding: 11px;
-            border: none; border-radius: 6px;
-            font-weight: bold; cursor: pointer;
-            font-family: inherit; transition: opacity 0.2s;
+            flex: 1; padding: 12px;
+            border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: opacity 0.2s;
         }
         .btn-save   { background: #8a2be2; color: white; }
         .btn-cancel { background: #2a2d35; color: #aaa; }
@@ -131,10 +157,11 @@
             position: fixed; bottom: 24px; left: 50%;
             transform: translateX(-50%);
             background: #03dac6; color: #0b0e14;
-            padding: 10px 22px; border-radius: 30px;
-            font-weight: bold; font-size: 0.85rem;
+            padding: 10px 24px; border-radius: 30px;
+            font-weight: 600; font-size: 0.85rem;
             opacity: 0; pointer-events: none;
             transition: opacity 0.3s; z-index: 200;
+            font-family: 'Poppins', sans-serif;
         }
         #toast.show { opacity: 1; }
     </style>
@@ -142,66 +169,78 @@
 <body>
     {% csrf_token %}
     <div class="container">
-        <h1>Welcome, Anita!</h1>
-        <div style="text-align:center; margin-bottom: 10px;">
-            <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:bold;">🚪 Logout</a>
-        </div>
-        <p>Swahilipot Growth Tracker</p>
 
-        <div id="form-area">
+        <!-- Header Card -->
+        <div class="card">
+            <h1>Welcome, Anita!</h1>
+            <p class="subtitle">Swahilipot Hub Growth Tracker</p>
+            <div style="text-align:center;">
+                <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">🚪 Logout</a>
+            </div>
+        </div>
+
+        <!-- Add Milestone Card -->
+        <div class="card">
+            <p class="section-title">➕ Add New Milestone</p>
             <input type="text" id="new-title" placeholder="Milestone Title">
             <input type="text" id="new-category" placeholder="Category (e.g. Django, Frontend)">
             <textarea id="new-desc" placeholder="Brief description..."></textarea>
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
 
-        <!-- Progress Chart -->
-        <div class="chart-box">
-            <h3>📊 Milestones per Category</h3>
+        <!-- Chart Card -->
+        <div class="card">
+            <p class="section-title">📊 Milestones per Category</p>
             <canvas id="progressChart" height="180"></canvas>
         </div>
 
-        <!-- Filters -->
-        <div class="filters">
-            <select id="month-filter" onchange="loadMilestones()">
-                <option value="">📅 All Months</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            <select id="category-filter" onchange="loadMilestones()">
-                <option value="">🏷️ All Categories</option>
-            </select>
+        <!-- Milestones Card -->
+        <div class="card">
+            <p class="section-title">🏆 Your Milestones</p>
+            <div class="filters">
+                <select id="month-filter" onchange="loadMilestones()">
+                    <option value="">📅 All Months</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <select id="category-filter" onchange="loadMilestones()">
+                    <option value="">🏷️ All Categories</option>
+                </select>
+            </div>
+            <div id="milestone-list">
+                <p style="text-align:center; margin-top:20px; color:#555;">Scanning the database...</p>
+            </div>
         </div>
 
-        <div id="milestone-list">
-            <p style="text-align:center; margin-top:20px; color:#555;">Scanning the database...</p>
+        <!-- Social Links Card -->
+        <div class="card">
+            <p class="section-title">🌐 Find Me Online</p>
+            <div class="social-links">
+                <a href="https://instagram.com/being_anita1" target="_blank" class="instagram" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://github.com/anita564-lucy" target="_blank" class="github" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/LucyAnita194615" target="_blank" class="twitter" title="Twitter/X">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/lucy-odhiambo-65a123277" target="_blank" class="linkedin" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
         </div>
 
-        <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://instagram.com/being_anita1" target="_blank" class="instagram" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://github.com/anita564-lucy" target="_blank" class="github" title="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://twitter.com/LucyAnita194615" target="_blank" class="twitter" title="Twitter/X">
-                <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/lucy-odhiambo-65a123277" target="_blank" class="linkedin" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-        </div>
     </div>
 
     <div class="modal-overlay" id="editModal">
@@ -260,8 +299,8 @@
                     responsive: true,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { ticks: { color: '#bb86fc' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { ticks: { color: '#bb86fc', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                        x: { ticks: { color: '#bb86fc', font: { family: 'Poppins' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#bb86fc', stepSize: 1, font: { family: 'Poppins' } }, grid: { color: 'rgba(255,255,255,0.05)' } }
                     }
                 }
             });
@@ -301,9 +340,9 @@
             list.innerHTML = data.map(m => `
                 <div class="milestone-card" id="card-${m.id}">
                     <div class="category">${m.category || 'General'}</div>
-                    <h3 style="margin:5px 0 4px;color:#d8b4fe;">${m.title}</h3>
-                    <p style="color:#e2e8f0;font-size:0.9em;">${m.description}</p>
-                    <small style="color:#555;">${new Date(m.date_created).toLocaleDateString()}</small>
+                    <h3 style="margin:5px 0 4px;color:#d8b4fe;font-size:1rem;">${m.title}</h3>
+                    <p style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${m.description}</p>
+                    <small style="color:#555;font-size:0.75rem;">${new Date(m.date_created).toLocaleDateString()}</small>
                     <div class="card-actions">
                         <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}')">[✎] Edit</button>
                         <button class="delete-btn" onclick="deleteMilestone(${m.id})">[✕] Delete</button>
