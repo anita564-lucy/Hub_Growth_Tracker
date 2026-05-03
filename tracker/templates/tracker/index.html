@@ -199,6 +199,7 @@
         <div class="card">
             <p class="section-title">🏆 Your Milestones</p>
 <div id="milestone-counter" style="text-align:center; margin-bottom:15px; color:#03dac6; font-size:0.9rem; font-weight:600;"></div>
+<input type="text" id="search-input" placeholder="🔍 Search milestones..." oninput="loadMilestones()" style="margin-bottom:10px;">
             <div class="filters">
                 <select id="month-filter" onchange="loadMilestones()">
                     <option value="">📅 All Months</option>
@@ -323,6 +324,14 @@
                 catSelect.appendChild(opt);
             });
             let data = allMilestones;
+            const search = document.getElementById('search-input').value.toLowerCase();
+if (search) {
+    data = data.filter(m =>
+        m.title.toLowerCase().includes(search) ||
+        m.category.toLowerCase().includes(search) ||
+        m.description.toLowerCase().includes(search)
+    );
+}
             renderChart(allMilestones);
             const totalMilestones = allMilestones.length;
 const totalCategories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))].length;
