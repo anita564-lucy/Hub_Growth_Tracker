@@ -66,3 +66,7 @@ def update_milestone_api(request, pk):
             return JsonResponse({'status': 'success'})
         except Milestone.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Not found'}, status=404)
+
+@login_required(login_url='/login/')
+def profile_page(request):
+    return render(request, 'tracker/profile.html')
