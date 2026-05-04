@@ -36,11 +36,12 @@ def milestone_list_api(request):
         Milestone.objects.create(
             title=data['title'],
             category=data.get('category', 'General'),
-            description=data.get('description', '')
+            description=data.get('description', ''),
+            status=data.get('status', 'planned')
         )
         return JsonResponse({'status': 'success'})
 
-    milestones = Milestone.objects.all().values('id', 'title', 'category', 'description', 'date_created')
+    milestones = Milestone.objects.all().values('id', 'title', 'category', 'description', 'status', 'date_created')
     return JsonResponse(list(milestones), safe=False)
 
 @login_required(login_url='/login/')
@@ -62,6 +63,7 @@ def update_milestone_api(request, pk):
             milestone.title = data.get('title', milestone.title)
             milestone.category = data.get('category', milestone.category)
             milestone.description = data.get('description', milestone.description)
+            milestone.status = data.get('status', milestone.status)
             milestone.save()
             return JsonResponse({'status': 'success'})
         except Milestone.DoesNotExist:

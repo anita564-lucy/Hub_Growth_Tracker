@@ -1,16 +1,17 @@
 from django.db import models
 
 class Milestone(models.Model):
-    # The title of what you achieved (e.g., "Learned JavaScript")
+
+    STATUS_CHOICES = [
+        ('planned', 'Planned'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+
     title = models.CharField(max_length=200)
-    
-    # Category helps you filter between Backend, Cyber, or Hub Events
-    category = models.CharField(max_length=50) 
-    
-    # A place to write details about what you did
+    category = models.CharField(max_length=50)
     description = models.TextField()
-    
-    # Automatically records the date you added it
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned')
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

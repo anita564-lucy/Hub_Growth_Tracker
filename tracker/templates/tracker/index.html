@@ -86,11 +86,27 @@
             transition: transform 0.2s;
         }
         .milestone-card:hover { transform: translateX(4px); }
+        .milestone-card.completed { border-left-color: #4caf50; }
+        .milestone-card.in_progress { border-left-color: #ff9800; }
+        .milestone-card.planned { border-left-color: #03dac6; }
         .category {
             color: #03dac6; font-weight: 600;
             font-size: 0.65rem; text-transform: uppercase;
             letter-spacing: 1.5px;
         }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 8px;
+        }
+        .status-badge.planned { background: rgba(3, 218, 198, 0.15); color: #03dac6; }
+        .status-badge.in_progress { background: rgba(255, 152, 0, 0.15); color: #ff9800; }
+        .status-badge.completed { background: rgba(76, 175, 80, 0.15); color: #4caf50; }
         .card-actions {
             position: absolute; top: 12px; right: 12px;
             display: flex; gap: 8px;
@@ -187,6 +203,11 @@
             <input type="text" id="new-title" placeholder="Milestone Title">
             <input type="text" id="new-category" placeholder="Category (e.g. Django, Frontend)">
             <textarea id="new-desc" placeholder="Brief description..."></textarea>
+            <select id="new-status">
+                <option value="planned">Planned</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
 
@@ -257,6 +278,11 @@
             <input type="text" id="edit-title" placeholder="Title">
             <input type="text" id="edit-category" placeholder="Category">
             <textarea id="edit-desc" placeholder="Description..."></textarea>
+            <select id="edit-status">
+                <option value="planned">Planned</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal()">Cancel</button>
                 <button class="btn-save" onclick="saveEdit()">Save Changes</button>
@@ -356,13 +382,16 @@
                 return;
             }
             list.innerHTML = data.map(m => `
-                <div class="milestone-card" id="card-${m.id}">
-                    <div class="category">${m.category || 'General'}</div>
+                <div class="milestone-card ${m.status}" id="card-${m.id}">
+                    <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                        <div class="category">${m.category || 'General'}</div>
+                        <span class="status-badge ${m.status}">${m.status === 'in_progress' ? 'In Progress' : m.status.charAt(0).toUpperCase() + m.status.slice(1)}</span>
+                    </div>
                     <h3 style="margin:5px 0 4px;color:#d8b4fe;font-size:1rem;">${m.title}</h3>
                     <p style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${m.description}</p>
                     <small style="color:#555;font-size:0.75rem;">${new Date(m.date_created).toLocaleDateString()}</small>
                     <div class="card-actions">
-                        <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}')">[Edit]</button>
+                        <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}', '${m.status}')">[Edit]</button>
                         <button class="delete-btn" onclick="deleteMilestone(${m.id})">[Delete]</button>
                     </div>
                 </div>
@@ -375,15 +404,17 @@
             const title       = document.getElementById('new-title').value.trim();
             const category    = document.getElementById('new-category').value.trim();
             const description = document.getElementById('new-desc').value.trim();
+            const status      = document.getElementById('new-status').value;
             if (!title) { alert('Please add a title!'); return; }
             await fetch('/api/milestones/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrf() },
-                body: JSON.stringify({ title, category, description })
+                body: JSON.stringify({ title, category, description, status })
             });
             document.getElementById('new-title').value    = '';
             document.getElementById('new-category').value = '';
             document.getElementById('new-desc').value     = '';
+            document.getElementById('new-status').value   = 'planned';
             showToast('Milestone added!');
             loadMilestones();
         }
@@ -396,11 +427,12 @@
             showToast('Milestone deleted.');
             loadMilestones();
         }
-        function openEditModal(id, title, category, description) {
+        function openEditModal(id, title, category, description, status) {
             document.getElementById('edit-id').value       = id;
             document.getElementById('edit-title').value    = title;
             document.getElementById('edit-category').value = category;
             document.getElementById('edit-desc').value     = description;
+            document.getElementById('edit-status').value   = status;
             document.getElementById('editModal').classList.add('active');
         }
         function closeModal() {
@@ -414,11 +446,12 @@
             const title       = document.getElementById('edit-title').value.trim();
             const category    = document.getElementById('edit-category').value.trim();
             const description = document.getElementById('edit-desc').value.trim();
+            const status      = document.getElementById('edit-status').value;
             if (!title) { alert('Title cannot be empty!'); return; }
             const res = await fetch(`/api/milestones/update/${id}/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrf() },
-                body: JSON.stringify({ title, category, description })
+                body: JSON.stringify({ title, category, description, status })
             });
             const data = await res.json();
             if (data.status === 'success') {
@@ -451,7 +484,7 @@
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(9);
                 doc.setTextColor(100);
-                doc.text(`Category: ${m.category || 'General'} | Date: ${new Date(m.date_created).toLocaleDateString()}`, 14, y);
+                doc.text(`Category: ${m.category || 'General'} | Status: ${m.status} | Date: ${new Date(m.date_created).toLocaleDateString()}`, 14, y);
                 y += 5;
                 const descLines = doc.splitTextToSize(m.description || '', 180);
                 doc.text(descLines, 14, y);
