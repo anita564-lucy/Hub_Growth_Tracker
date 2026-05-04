@@ -176,14 +176,14 @@
             <h1>Welcome, Anita!</h1>
             <p class="subtitle">Swahilipot Hub Growth Tracker</p>
             <div style="text-align:center; display:flex; justify-content:center; gap:20px;">
-                <a href="/profile/" style="color:#03dac6; font-size:0.85rem; text-decoration:none; font-weight:600;">👤 My Profile</a>
-                <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">🚪 Logout</a>
+                <a href="/profile/" style="color:#03dac6; font-size:0.85rem; text-decoration:none; font-weight:600;">My Profile</a>
+                <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">Logout</a>
             </div>
         </div>
 
         <!-- Add Milestone Card -->
         <div class="card">
-            <p class="section-title">➕ Add New Milestone</p>
+            <p class="section-title">Add New Milestone</p>
             <input type="text" id="new-title" placeholder="Milestone Title">
             <input type="text" id="new-category" placeholder="Category (e.g. Django, Frontend)">
             <textarea id="new-desc" placeholder="Brief description..."></textarea>
@@ -192,21 +192,21 @@
 
         <!-- Chart Card -->
         <div class="card">
-            <p class="section-title">📊 Milestones per Category</p>
+            <p class="section-title">Milestones per Category</p>
             <canvas id="progressChart" height="180"></canvas>
         </div>
 
         <!-- Milestones Card -->
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
-                <p class="section-title" style="margin-bottom:0;">🏆 Your Milestones</p>
-                <button onclick="exportToPDF()" style="background:#8a2be2; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.8rem; font-weight:600;">📄 Export PDF</button>
+                <p class="section-title" style="margin-bottom:0;">Your Milestones</p>
+                <button onclick="exportToPDF()" style="background:#8a2be2; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.8rem; font-weight:600;">Export PDF</button>
             </div>
             <div id="milestone-counter" style="text-align:center; margin-bottom:15px; color:#03dac6; font-size:0.9rem; font-weight:600;"></div>
-            <input type="text" id="search-input" placeholder="🔍 Search milestones..." oninput="loadMilestones()">
+            <input type="text" id="search-input" placeholder="Search milestones..." oninput="loadMilestones()">
             <div class="filters">
                 <select id="month-filter" onchange="loadMilestones()">
-                    <option value="">📅 All Months</option>
+                    <option value="">All Months</option>
                     <option value="01">January</option>
                     <option value="02">February</option>
                     <option value="03">March</option>
@@ -221,17 +221,17 @@
                     <option value="12">December</option>
                 </select>
                 <select id="category-filter" onchange="loadMilestones()">
-                    <option value="">🏷️ All Categories</option>
+                    <option value="">All Categories</option>
                 </select>
             </div>
             <div id="milestone-list">
-                <p style="text-align:center; margin-top:20px; color:#555;">Scanning the database...</p>
+                <p style="text-align:center; margin-top:20px; color:#555;">Loading...</p>
             </div>
         </div>
 
         <!-- Social Links Card -->
         <div class="card">
-            <p class="section-title">🌐 Find Me Online</p>
+            <p class="section-title">Find Me Online</p>
             <div class="social-links">
                 <a href="https://instagram.com/being_anita1" target="_blank" class="instagram" title="Instagram">
                     <i class="fab fa-instagram"></i>
@@ -252,7 +252,7 @@
 
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <h2>✏️ Edit Milestone</h2>
+            <h2>Edit Milestone</h2>
             <input type="hidden" id="edit-id">
             <input type="text" id="edit-title" placeholder="Title">
             <input type="text" id="edit-category" placeholder="Category">
@@ -320,7 +320,7 @@
             const categories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))];
             const catSelect = document.getElementById('category-filter');
             const currentCat = catSelect.value;
-            catSelect.innerHTML = '<option value="">🏷️ All Categories</option>';
+            catSelect.innerHTML = '<option value="">All Categories</option>';
             categories.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c; opt.textContent = c;
@@ -339,7 +339,7 @@
             renderChart(allMilestones);
             const totalMilestones = allMilestones.length;
             const totalCategories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))].length;
-            document.getElementById('milestone-counter').textContent = `🏆 You have ${totalMilestones} milestones across ${totalCategories} categories!`;
+            document.getElementById('milestone-counter').textContent = `You have ${totalMilestones} milestones across ${totalCategories} categories`;
             if (month) {
                 data = data.filter(m => {
                     const d = new Date(m.date_created);
@@ -352,7 +352,7 @@
             }
             const list = document.getElementById('milestone-list');
             if (data.length === 0) {
-                list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found!</p>';
+                list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found.</p>';
                 return;
             }
             list.innerHTML = data.map(m => `
@@ -362,8 +362,8 @@
                     <p style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${m.description}</p>
                     <small style="color:#555;font-size:0.75rem;">${new Date(m.date_created).toLocaleDateString()}</small>
                     <div class="card-actions">
-                        <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}')">[✎] Edit</button>
-                        <button class="delete-btn" onclick="deleteMilestone(${m.id})">[✕] Delete</button>
+                        <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}')">[Edit]</button>
+                        <button class="delete-btn" onclick="deleteMilestone(${m.id})">[Delete]</button>
                     </div>
                 </div>
             `).join('');
@@ -384,7 +384,7 @@
             document.getElementById('new-title').value    = '';
             document.getElementById('new-category').value = '';
             document.getElementById('new-desc').value     = '';
-            showToast('✅ Milestone added!');
+            showToast('Milestone added!');
             loadMilestones();
         }
         async function deleteMilestone(id) {
@@ -393,7 +393,7 @@
                 method: 'POST',
                 headers: { 'X-CSRFToken': getCsrf() }
             });
-            showToast('🗑️ Milestone deleted.');
+            showToast('Milestone deleted.');
             loadMilestones();
         }
         function openEditModal(id, title, category, description) {
@@ -423,7 +423,7 @@
             const data = await res.json();
             if (data.status === 'success') {
                 closeModal();
-                showToast('✏️ Milestone updated!');
+                showToast('Milestone updated!');
                 loadMilestones();
             } else {
                 alert('Something went wrong: ' + data.message);
@@ -432,17 +432,14 @@
         function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(18);
             doc.setTextColor(138, 43, 226);
             doc.text('Hub Growth Tracker - My Milestones', 14, 20);
-
             doc.setFontSize(10);
             doc.setTextColor(100);
             doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 28);
             doc.text(`Total: ${allMilestones.length} milestones`, 14, 34);
-
             let y = 45;
             allMilestones.forEach((m, i) => {
                 if (y > 270) { doc.addPage(); y = 20; }
@@ -460,9 +457,8 @@
                 doc.text(descLines, 14, y);
                 y += descLines.length * 5 + 8;
             });
-
             doc.save('my-milestones.pdf');
-            showToast('📄 PDF downloaded!');
+            showToast('PDF downloaded!');
         }
         loadMilestones();
     </script>
