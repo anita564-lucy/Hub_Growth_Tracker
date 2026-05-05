@@ -72,3 +72,6 @@ def update_milestone_api(request, pk):
 @login_required(login_url='/login/')
 def profile_page(request):
     return render(request, 'tracker/profile.html')
+
+def custom_404(request, exception):
+    return render(request, 'tracker/404.html', status=404)
