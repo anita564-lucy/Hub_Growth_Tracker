@@ -41,7 +41,7 @@ def milestone_list_api(request):
         )
         return JsonResponse({'status': 'success'})
 
-    milestones = Milestone.objects.all().values('id', 'title', 'category', 'description', 'status', 'date_created')
+    milestones = Milestone.objects.all().values('id', 'title', 'category', 'description', 'status', 'date_created', 'date_updated')
     return JsonResponse(list(milestones), safe=False)
 
 @login_required(login_url='/login/')

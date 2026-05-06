@@ -205,7 +205,6 @@
             font-family: 'Poppins', sans-serif;
         }
         #toast.show { opacity: 1; }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
@@ -275,11 +274,11 @@
                     <option value="">All Categories</option>
                 </select>
             </div>
-           <div id="milestone-list">
-    <div style="text-align:center; margin-top:20px;">
-        <div style="width:40px; height:40px; border:4px solid rgba(138,43,226,0.2); border-top:4px solid #8a2be2; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto;"></div>
-    </div>
-</div>
+            <div id="milestone-list">
+                <div style="text-align:center; margin-top:20px;">
+                    <div style="width:40px; height:40px; border:4px solid rgba(138,43,226,0.2); border-top:4px solid #8a2be2; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto;"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Social Links Card -->
@@ -426,7 +425,7 @@
                     </div>
                     <h3 style="margin:5px 0 4px;color:#d8b4fe;font-size:1rem;">${m.title}</h3>
                     <p style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${m.description}</p>
-                    <small style="color:#555;font-size:0.75rem;">${new Date(m.date_created).toLocaleDateString()}</small>
+                    <small style="color:#555;font-size:0.75rem;">Created: ${new Date(m.date_created).toLocaleDateString()} | Updated: ${new Date(m.date_updated).toLocaleDateString()}</small>
                     <div class="card-actions">
                         <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}', '${m.status}')">[Edit]</button>
                         <button class="delete-btn" onclick="deleteMilestone(${m.id})">[Delete]</button>
