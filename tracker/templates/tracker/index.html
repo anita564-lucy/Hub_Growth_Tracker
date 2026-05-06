@@ -20,214 +20,79 @@
             min-height: 100vh;
             transition: background 0.3s, color 0.3s;
         }
-        body.light-mode {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        body.light-mode .card {
-            background: rgba(255,255,255,0.9);
-            border-color: rgba(138,43,226,0.2);
-            box-shadow: 0 4px 30px rgba(138,43,226,0.05);
-        }
-        body.light-mode input,
-        body.light-mode textarea,
-        body.light-mode select {
-            background: #fff;
-            color: #333;
-            border-color: #8a2be2;
-        }
-        body.light-mode .milestone-card {
-            background: rgba(138,43,226,0.05);
-        }
+        body.light-mode { background-color: #f5f5f5; color: #333; }
+        body.light-mode .card { background: rgba(255,255,255,0.9); border-color: rgba(138,43,226,0.2); box-shadow: 0 4px 30px rgba(138,43,226,0.05); }
+        body.light-mode input, body.light-mode textarea, body.light-mode select { background: #fff; color: #333; border-color: #8a2be2; }
+        body.light-mode .milestone-card { background: rgba(138,43,226,0.05); }
         body.light-mode .section-title { color: #666; }
-        body.light-mode .subtitle { color: #666; }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 4px 30px rgba(138, 43, 226, 0.1);
-            transition: background 0.3s;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 6px;
-            font-size: 3.5rem;
-            font-family: 'Pinyon Script', cursive;
-            font-weight: 400;
-            letter-spacing: 1px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 14px;
-            font-size: 0.95rem;
-            font-weight: 300;
-        }
-        input, textarea, select {
-            width: 100%; margin-bottom: 12px; padding: 12px;
-            border-radius: 8px; border: 1px solid #8a2be2;
-            background: #1a1d23; color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            transition: background 0.3s, color 0.3s;
-        }
-        textarea { resize: vertical; min-height: 80px; }
-        button.main-btn {
-            width: 100%; padding: 13px; background: #8a2be2;
-            color: white; border: none; border-radius: 8px;
-            cursor: pointer; font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            transition: background 0.2s;
-            letter-spacing: 0.5px;
-        }
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 30px; }
+        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(138,43,226,0.3); padding: 35px; border-radius: 24px; box-shadow: 0 4px 30px rgba(138,43,226,0.1); transition: background 0.3s; }
+        h1 { text-align: center; margin-bottom: 6px; font-size: 3.5rem; font-family: 'Pinyon Script', cursive; font-weight: 400; letter-spacing: 1px; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 14px; font-size: 0.95rem; font-weight: 300; }
+        input, textarea, select { width: 100%; margin-bottom: 12px; padding: 12px; border-radius: 8px; border: 1px solid #8a2be2; background: #1a1d23; color: white; font-family: 'Poppins', sans-serif; font-size: 0.9rem; }
+        button.main-btn { width: 100%; padding: 13px; background: #8a2be2; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; font-size: 0.95rem; transition: background 0.2s; }
         button.main-btn:hover { background: #7a1bd2; }
         .filters { display: flex; gap: 10px; margin-bottom: 10px; }
-        .filters select { margin-bottom: 0; }
-        .section-title {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 18px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
+        .section-title { font-size: 0.8rem; color: #888; margin-bottom: 18px; text-align: center; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        
+        /* Badge UI */
+        #badge-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+        .badge {
+            display: flex; flex-direction: column; align-items: center;
+            width: 100px; padding: 12px; background: rgba(138, 43, 226, 0.1);
+            border: 1px solid #8a2be2; border-radius: 12px; text-align: center;
+            animation: bounceIn 0.5s ease;
         }
-        .milestone-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid #03dac6;
-            margin: 14px 0; padding: 16px;
-            border-radius: 0 12px 12px 0;
-            position: relative;
-            transition: transform 0.2s;
-        }
-        .milestone-card:hover { transform: translateX(4px); }
+        .badge i { font-size: 1.6rem; color: #03dac6; margin-bottom: 6px; }
+        .badge span { font-size: 0.65rem; font-weight: 700; color: #bb86fc; text-transform: uppercase; }
+        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); } }
+
+        /* Milestone Card */
+        .milestone-card { background: rgba(255,255,255,0.03); border-left: 4px solid #03dac6; margin: 14px 0; padding: 16px; border-radius: 0 12px 12px 0; position: relative; }
         .milestone-card.completed { border-left-color: #4caf50; }
         .milestone-card.in_progress { border-left-color: #ff9800; }
         .milestone-card.planned { border-left-color: #03dac6; }
-        .category {
-            color: #03dac6; font-weight: 600;
-            font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: 8px;
-        }
+        .category { color: #03dac6; font-weight: 600; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; }
+        .status-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-left: 8px; }
         .status-badge.planned { background: rgba(3,218,198,0.15); color: #03dac6; }
         .status-badge.in_progress { background: rgba(255,152,0,0.15); color: #ff9800; }
         .status-badge.completed { background: rgba(76,175,80,0.15); color: #4caf50; }
-        .card-actions {
-            position: absolute; top: 12px; right: 12px;
-            display: flex; gap: 8px;
-        }
-        .delete-btn, .edit-btn {
-            background: none; border: none;
-            cursor: pointer; font-weight: bold;
-            font-size: 0.8rem; opacity: 0.6;
-            transition: opacity 0.2s;
-            font-family: 'Poppins', sans-serif;
-        }
+        .card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; }
+        .delete-btn, .edit-btn { background: none; border: none; cursor: pointer; font-weight: bold; font-size: 0.8rem; opacity: 0.6; font-family: 'Poppins', sans-serif; }
         .delete-btn { color: #ff4d4d; }
-        .edit-btn   { color: #03dac6; }
-        .delete-btn:hover, .edit-btn:hover { opacity: 1; }
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            padding-top: 10px;
-        }
-        .social-links a {
-            color: #bb86fc;
-            font-size: 2rem;
-            text-decoration: none;
-            transition: transform 0.2s, color 0.2s;
-        }
+        .edit-btn { color: #03dac6; }
+        .social-links { display: flex; justify-content: center; gap: 28px; padding-top: 10px; }
+        .social-links a { color: #bb86fc; font-size: 2rem; text-decoration: none; transition: transform 0.2s; }
         .social-links a:hover { transform: scale(1.2); }
-        .social-links a.instagram:hover { color: #e1306c; }
-        .social-links a.github:hover    { color: #ffffff; }
-        .social-links a.twitter:hover   { color: #1da1f2; }
-        .social-links a.linkedin:hover  { color: #0077b5; }
-        .modal-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal {
-            background: #12151c;
-            border: 1px solid rgba(138, 43, 226, 0.5);
-            border-radius: 20px; padding: 35px;
-            width: 90%; max-width: 460px;
-            animation: popIn 0.2s ease;
-        }
-        @keyframes popIn {
-            from { transform: scale(0.92); opacity: 0; }
-            to   { transform: scale(1);    opacity: 1; }
-        }
-        .modal h2 { color: #d8b4fe; margin-bottom: 20px; font-size: 1.1rem; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 6px; }
-        .modal-actions button {
-            flex: 1; padding: 12px;
-            border: none; border-radius: 8px;
-            font-weight: 600; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: opacity 0.2s;
-        }
-        .btn-save   { background: #8a2be2; color: white; }
-        .btn-cancel { background: #2a2d35; color: #aaa; }
-        .btn-save:hover, .btn-cancel:hover { opacity: 0.85; }
-        #toast {
-            position: fixed; bottom: 24px; left: 50%;
-            transform: translateX(-50%);
-            background: #03dac6; color: #0b0e14;
-            padding: 10px 24px; border-radius: 30px;
-            font-weight: 600; font-size: 0.85rem;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.3s; z-index: 200;
-            font-family: 'Poppins', sans-serif;
-        }
+        .modal { background: #12151c; border: 1px solid rgba(138,43,226,0.5); border-radius: 20px; padding: 35px; width: 90%; max-width: 460px; }
+        #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #03dac6; color: #0b0e14; padding: 10px 24px; border-radius: 30px; font-weight: 600; font-size: 0.85rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200; }
         #toast.show { opacity: 1; }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; }
+        .pagination button { background: #8a2be2; color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .pagination button:disabled { background: #2a2d35; color: #555; }
     </style>
 </head>
 <body>
     {% csrf_token %}
     <div class="container">
-
-        <!-- Header Card -->
         <div class="card">
             <h1>Welcome, Anita</h1>
             <p class="subtitle">Swahilipot Hub Growth Tracker</p>
             <div style="text-align:center; display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
                 <a href="/profile/" style="color:#03dac6; font-size:0.85rem; text-decoration:none; font-weight:600;">My Profile</a>
                 <a href="/logout/" style="color:#ff4d4d; font-size:0.85rem; text-decoration:none; font-weight:600;">Logout</a>
-                <button onclick="toggleTheme()" id="theme-btn" style="background:none; border:1px solid #8a2be2; color:#bb86fc; border-radius:8px; padding:4px 12px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.8rem;">Light Mode</button>
+                <button onclick="toggleTheme()" id="theme-btn" style="background:none; border:1px solid #8a2be2; color:#bb86fc; border-radius:8px; padding:4px 12px; cursor:pointer;">Light Mode</button>
             </div>
         </div>
 
-        <!-- Add Milestone Card -->
-        <div class="card">
+        <div class="card" id="achievements-card" style="display: none;">
+            <p class="section-title">Milestone Achievements</p>
+            <div id="badge-container"></div>
+        </div>
+
+        <div class="card add-milestone-section">
             <p class="section-title">Add New Milestone</p>
             <input type="text" id="new-title" placeholder="Milestone Title">
             <input type="text" id="new-category" placeholder="Category (e.g. Django, Frontend)">
@@ -240,71 +105,56 @@
             <button class="main-btn" onclick="addMilestone()">+ Add New Milestone</button>
         </div>
 
-        <!-- Chart Card -->
         <div class="card">
             <p class="section-title">Milestones per Category</p>
             <canvas id="progressChart" height="180"></canvas>
         </div>
 
-        <!-- Milestones Card -->
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
                 <p class="section-title" style="margin-bottom:0;">Your Milestones</p>
-                <button onclick="exportToPDF()" style="background:#8a2be2; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:0.8rem; font-weight:600;">Export PDF</button>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="window.print()" style="background:none; border:1px solid #03dac6; color:#03dac6; border-radius:8px; padding:8px 16px; cursor:pointer; font-weight:600;">Print</button>
+                    <button onclick="exportToPDF()" style="background:#8a2be2; color:white; border:none; border-radius:8px; padding:8px 16px; cursor:pointer; font-weight:600;">Export PDF</button>
+                </div>
             </div>
             <div id="milestone-counter" style="text-align:center; margin-bottom:15px; color:#03dac6; font-size:0.9rem; font-weight:600;"></div>
             <input type="text" id="search-input" placeholder="Search milestones..." oninput="loadMilestones()">
             <div class="filters">
                 <select id="month-filter" onchange="loadMilestones()">
                     <option value="">All Months</option>
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
+                    <option value="01">January</option><option value="02">February</option><option value="03">March</option>
+                    <option value="04">April</option><option value="05">May</option><option value="06">June</option>
+                    <option value="07">July</option><option value="08">August</option><option value="09">September</option>
+                    <option value="10">October</option><option value="11">November</option><option value="12">December</option>
                 </select>
                 <select id="category-filter" onchange="loadMilestones()">
                     <option value="">All Categories</option>
                 </select>
             </div>
-            <div id="milestone-list">
-                <div style="text-align:center; margin-top:20px;">
-                    <div style="width:40px; height:40px; border:4px solid rgba(138,43,226,0.2); border-top:4px solid #8a2be2; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto;"></div>
-                </div>
+            <div id="milestone-list"></div>
+            <div class="pagination">
+                <button id="prev-btn" onclick="changePage(-1)" disabled>Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-btn" onclick="changePage(1)">Next</button>
             </div>
         </div>
 
-        <!-- Social Links Card -->
         <div class="card">
             <p class="section-title">Find Me Online</p>
             <div class="social-links">
-                <a href="https://instagram.com/being_anita1" target="_blank" class="instagram" title="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://github.com/anita564-lucy" target="_blank" class="github" title="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://twitter.com/LucyAnita194615" target="_blank" class="twitter" title="Twitter/X">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/lucy-odhiambo-65a123277" target="_blank" class="linkedin" title="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
+                <a href="https://instagram.com/being_anita1" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/anita564-lucy" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://twitter.com/LucyAnita194615" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/lucy-odhiambo-65a123277" target="_blank"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-
     </div>
 
+    <!-- Edit Modal -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <h2>Edit Milestone</h2>
+            <h2 style="color:#d8b4fe; margin-bottom:20px; font-size:1.1rem;">Edit Milestone</h2>
             <input type="hidden" id="edit-id">
             <input type="text" id="edit-title" placeholder="Title">
             <input type="text" id="edit-category" placeholder="Category">
@@ -314,9 +164,9 @@
                 <option value="in_progress">In Progress</option>
                 <option value="completed">Completed</option>
             </select>
-            <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+            <div style="display:flex; gap:10px;">
+                <button onclick="closeModal()" style="flex:1; padding:10px; background:none; border:1px solid #8a2be2; color:white; border-radius:8px; cursor:pointer;">Cancel</button>
+                <button onclick="saveEdit()" style="flex:1; padding:10px; background:#8a2be2; color:white; border:none; border-radius:8px; cursor:pointer;">Save</button>
             </div>
         </div>
     </div>
@@ -326,59 +176,46 @@
     <script>
         let allMilestones = [];
         let chartInstance = null;
+        let currentPage = 1;
+        const itemsPerPage = 5;
 
-        function getCsrf() {
-            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        function getCsrf() { return document.querySelector('[name=csrfmiddlewaretoken]').value; }
+        function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+        function toggleTheme() { document.body.classList.toggle('light-mode'); const btn = document.getElementById('theme-btn'); btn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode'; }
+        function changePage(direction) { currentPage += direction; loadMilestones(); }
+
+        function updateBadges(milestones) {
+            const container = document.getElementById('badge-container');
+            const card = document.getElementById('achievements-card');
+            container.innerHTML = '';
+            let badges = [];
+            const completed = milestones.filter(m => m.status === 'completed').length;
+            if (milestones.length >= 1) badges.push({ icon: 'fa-rocket', text: 'First Step!' });
+            if (completed >= 5) badges.push({ icon: 'fa-trophy', text: 'High Achiever' });
+            if (milestones.length >= 10) badges.push({ icon: 'fa-fire', text: 'Consistent' });
+
+            if (badges.length > 0) {
+                card.style.display = 'block';
+                badges.forEach(b => { container.innerHTML += `<div class="badge"><i class="fas ${b.icon}"></i><span>${b.text}</span></div>`; });
+            } else { card.style.display = 'none'; }
         }
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
-        }
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('theme-btn');
-            btn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
-        }
+
         function renderChart(data) {
             const counts = {};
-            data.forEach(m => {
-                const cat = m.category || 'General';
-                counts[cat] = (counts[cat] || 0) + 1;
-            });
-            const labels = Object.keys(counts);
-            const values = Object.values(counts);
+            data.forEach(m => { const cat = m.category || 'General'; counts[cat] = (counts[cat] || 0) + 1; });
             if (chartInstance) chartInstance.destroy();
             const ctx = document.getElementById('progressChart').getContext('2d');
             chartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Milestones',
-                        data: values,
-                        backgroundColor: 'rgba(138, 43, 226, 0.6)',
-                        borderColor: '#8a2be2',
-                        borderWidth: 2,
-                        borderRadius: 6,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#bb86fc', font: { family: 'Poppins' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { ticks: { color: '#bb86fc', stepSize: 1, font: { family: 'Poppins' } }, grid: { color: 'rgba(255,255,255,0.05)' } }
-                    }
-                }
+                data: { labels: Object.keys(counts), datasets: [{ label: 'Milestones', data: Object.values(counts), backgroundColor: 'rgba(138,43,226,0.6)', borderColor: '#8a2be2', borderWidth: 2, borderRadius: 6 }] },
+                options: { responsive: true, plugins: { legend: { display: false } } }
             });
         }
+
         async function loadMilestones() {
-            const month    = document.getElementById('month-filter').value;
-            const category = document.getElementById('category-filter').value;
             const res = await fetch('/api/milestones/');
             allMilestones = await res.json();
+            
             const categories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))];
             const catSelect = document.getElementById('category-filter');
             const currentCat = catSelect.value;
@@ -389,146 +226,122 @@
                 if (c === currentCat) opt.selected = true;
                 catSelect.appendChild(opt);
             });
+
             let data = allMilestones;
             const search = document.getElementById('search-input').value.toLowerCase();
-            if (search) {
-                data = data.filter(m =>
-                    m.title.toLowerCase().includes(search) ||
-                    m.category.toLowerCase().includes(search) ||
-                    m.description.toLowerCase().includes(search)
-                );
-            }
+            if (search) data = data.filter(m => m.title.toLowerCase().includes(search) || m.category.toLowerCase().includes(search) || m.description.toLowerCase().includes(search));
+            const month = document.getElementById('month-filter').value;
+            if (month) data = data.filter(m => { const d = new Date(m.date_created); return String(d.getMonth() + 1).padStart(2, '0') === month; });
+            const categoryFilter = document.getElementById('category-filter').value;
+            if (categoryFilter) data = data.filter(m => m.category === categoryFilter);
+
+            updateBadges(allMilestones);
             renderChart(allMilestones);
-            const totalMilestones = allMilestones.length;
-            const totalCategories = [...new Set(allMilestones.map(m => m.category).filter(Boolean))].length;
-            document.getElementById('milestone-counter').textContent = `You have ${totalMilestones} milestones across ${totalCategories} categories`;
-            if (month) {
-                data = data.filter(m => {
-                    const d = new Date(m.date_created);
-                    const mm = String(d.getMonth() + 1).padStart(2, '0');
-                    return mm === month;
-                });
-            }
-            if (category) {
-                data = data.filter(m => m.category === category);
-            }
+            document.getElementById('milestone-counter').textContent = `You have ${allMilestones.length} milestones across ${categories.length} categories`;
+
+            const totalPages = Math.ceil(data.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+            const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+            
+            document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages || 1}`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === totalPages || totalPages === 0;
+
             const list = document.getElementById('milestone-list');
-            if (data.length === 0) {
-                list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found.</p>';
-                return;
-            }
-            list.innerHTML = data.map(m => `
+            if (data.length === 0) { list.innerHTML = '<p style="text-align:center;margin-top:20px;color:#555;">No milestones found.</p>'; return; }
+            
+            list.innerHTML = paginatedData.map(m => {
+                // Formatting dates exactly like the screenshot: DD/MM/YYYY
+                const fmtDate = (dStr) => {
+                    const d = new Date(dStr);
+                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+                };
+
+                return `
                 <div class="milestone-card ${m.status}" id="card-${m.id}">
                     <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px;">
                         <div class="category">${m.category || 'General'}</div>
-                        <span class="status-badge ${m.status}">${m.status === 'in_progress' ? 'In Progress' : m.status.charAt(0).toUpperCase() + m.status.slice(1)}</span>
+                        <span class="status-badge ${m.status}">${m.status.replace('_', ' ')}</span>
                     </div>
                     <h3 style="margin:5px 0 4px;color:#d8b4fe;font-size:1rem;">${m.title}</h3>
                     <p style="color:#e2e8f0;font-size:0.88em;line-height:1.5;">${m.description}</p>
-                    <small style="color:#555;font-size:0.75rem;">Created: ${new Date(m.date_created).toLocaleDateString()} | Updated: ${new Date(m.date_updated).toLocaleDateString()}</small>
+                    
+                    <!-- Screenshot-matched Footer -->
+                    <p style="color:#888; font-size:0.65rem; margin-top:12px; font-weight:400; opacity:0.8;">
+                        Created: ${fmtDate(m.date_created)} | Updated: ${fmtDate(m.date_updated || m.date_created)}
+                    </p>
+
                     <div class="card-actions">
                         <button class="edit-btn" onclick="openEditModal(${m.id}, '${escQ(m.title)}', '${escQ(m.category)}', '${escQ(m.description)}', '${m.status}')">[Edit]</button>
                         <button class="delete-btn" onclick="deleteMilestone(${m.id})">[Delete]</button>
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
         }
-        function escQ(str) {
-            return (str || '').replace(/'/g, "\\'").replace(/\n/g, ' ');
-        }
+
+        function escQ(str) { return (str || '').replace(/'/g, "\\'").replace(/\n/g, ' '); }
+
         async function addMilestone() {
-            const title       = document.getElementById('new-title').value.trim();
-            const category    = document.getElementById('new-category').value.trim();
-            const description = document.getElementById('new-desc').value.trim();
-            const status      = document.getElementById('new-status').value;
-            if (!title) { alert('Please add a title!'); return; }
+            const title = document.getElementById('new-title').value.trim();
+            if (!title) return;
             await fetch('/api/milestones/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrf() },
-                body: JSON.stringify({ title, category, description, status })
+                body: JSON.stringify({ 
+                    title, 
+                    category: document.getElementById('new-category').value.trim(), 
+                    description: document.getElementById('new-desc').value.trim(), 
+                    status: document.getElementById('new-status').value 
+                })
             });
-            document.getElementById('new-title').value    = '';
-            document.getElementById('new-category').value = '';
-            document.getElementById('new-desc').value     = '';
-            document.getElementById('new-status').value   = 'planned';
+            document.querySelectorAll('.add-milestone-section input, .add-milestone-section textarea').forEach(i => i.value = '');
             showToast('Milestone added!');
             loadMilestones();
         }
+
         async function deleteMilestone(id) {
             if (!confirm('Delete this milestone?')) return;
-            await fetch(`/api/milestones/delete/${id}/`, {
-                method: 'POST',
-                headers: { 'X-CSRFToken': getCsrf() }
-            });
+            await fetch(`/api/milestones/delete/${id}/`, { method: 'POST', headers: { 'X-CSRFToken': getCsrf() } });
             showToast('Milestone deleted.');
             loadMilestones();
         }
+
         function openEditModal(id, title, category, description, status) {
-            document.getElementById('edit-id').value       = id;
-            document.getElementById('edit-title').value    = title;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-title').value = title;
             document.getElementById('edit-category').value = category;
-            document.getElementById('edit-desc').value     = description;
-            document.getElementById('edit-status').value   = status;
+            document.getElementById('edit-desc').value = description;
+            document.getElementById('edit-status').value = status;
             document.getElementById('editModal').classList.add('active');
         }
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+
+        function closeModal() { document.getElementById('editModal').classList.remove('active'); }
+
         async function saveEdit() {
-            const id          = document.getElementById('edit-id').value;
-            const title       = document.getElementById('edit-title').value.trim();
-            const category    = document.getElementById('edit-category').value.trim();
-            const description = document.getElementById('edit-desc').value.trim();
-            const status      = document.getElementById('edit-status').value;
-            if (!title) { alert('Title cannot be empty!'); return; }
-            const res = await fetch(`/api/milestones/update/${id}/`, {
+            const id = document.getElementById('edit-id').value;
+            await fetch(`/api/milestones/update/${id}/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrf() },
-                body: JSON.stringify({ title, category, description, status })
+                body: JSON.stringify({ 
+                    title: document.getElementById('edit-title').value, 
+                    category: document.getElementById('edit-category').value, 
+                    description: document.getElementById('edit-desc').value, 
+                    status: document.getElementById('edit-status').value 
+                })
             });
-            const data = await res.json();
-            if (data.status === 'success') {
-                closeModal();
-                showToast('Milestone updated!');
-                loadMilestones();
-            } else {
-                alert('Something went wrong: ' + data.message);
-            }
+            closeModal();
+            showToast('Updated!');
+            loadMilestones();
         }
+
         function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(18);
-            doc.setTextColor(138, 43, 226);
-            doc.text('Hub Growth Tracker - My Milestones', 14, 20);
-            doc.setFontSize(10);
-            doc.setTextColor(100);
-            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 28);
-            doc.text(`Total: ${allMilestones.length} milestones`, 14, 34);
-            let y = 45;
-            allMilestones.forEach((m, i) => {
-                if (y > 270) { doc.addPage(); y = 20; }
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(11);
-                doc.setTextColor(30, 30, 30);
-                doc.text(`${i + 1}. ${m.title}`, 14, y);
-                y += 6;
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(9);
-                doc.setTextColor(100);
-                doc.text(`Category: ${m.category || 'General'} | Status: ${m.status} | Date: ${new Date(m.date_created).toLocaleDateString()}`, 14, y);
-                y += 5;
-                const descLines = doc.splitTextToSize(m.description || '', 180);
-                doc.text(descLines, 14, y);
-                y += descLines.length * 5 + 8;
-            });
-            doc.save('my-milestones.pdf');
-            showToast('PDF downloaded!');
+            doc.text('Hub Growth Tracker - Anita', 14, 20);
+            allMilestones.forEach((m, i) => { doc.text(`${i + 1}. ${m.title} [${m.status}]`, 14, 30 + (i * 10)); });
+            doc.save('growth-tracker.pdf');
         }
+
         loadMilestones();
     </script>
 </body>
