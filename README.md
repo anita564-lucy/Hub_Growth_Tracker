@@ -1,42 +1,24 @@
 # Hub Growth Tracker
 
-A full-stack web application built during my ICT attachment at Swahilipot Hub, Mombasa, Kenya.
+**A Production-Ready Milestone Management System**
 
-## Live Demo
-https://hub-growth-tracker.onrender.com
+The **Hub Growth Tracker** is a full-stack web application developed during my ICT attachment at **Swahilipot Hub**. It transforms manual milestone logging into a dynamic, data-driven experience for community members.
 
-## About
-Hub Growth Tracker is a milestone tracking system I built to document my technical growth and contributions during my attachment at Swahilipot Hub.
+### Technical Architecture
+* **Backend:** Built with **Django (Python)** for secure data handling and logic.
+* **Database:** Structured relational database for milestone persistence.
+* **Data Visualization:** Integrated **Chart.js** for real-time progress tracking.
+* **Frontend:** Custom corporate-style UI designed for professional clarity.
+* **Deployment:** Live production environment hosted on **Render**.
 
-## Technologies Used
-- Python & Django (backend)
-- HTML, CSS & JavaScript (frontend)
-- SQLite database
-- REST APIs
-- Chart.js (data visualization)
-- jsPDF (PDF export)
-- Deployed on Render
+### Core Features
+* **Secure Authentication:** Full User Signup and Login system with Django security middleware.
+* **Interactive Dashboard:** Visualizes milestones across Technical, Career, and Community categories.
+* **Responsive Design:** Optimized for professional use and high performance.
 
-## Features
-- User authentication (Login/Logout)
-- Add, Edit, Delete milestones
-- Milestone status (Planned, In Progress, Completed)
-- Category and Date filters
-- Search bar
-- Progress chart
-- Export to PDF
-- Print button
-- Profile page with photo
-- Social media links
-- Dark/Light mode toggle
-- Milestone counter
-- Pagination
-- Badges/Achievements
-- Last updated date
-- 404 error page
+### Live Demo
+* **Live App:** [https://hub-growth-tracker.onrender.com](https://hub-growth-tracker.onrender.com)
+* **Status:** Currently deployed and fully functional.
 
-## Author
-Lucy Anita
-Web Developer & Tech Intern at Swahilipot Hub
-GitHub: https://github.com/anita564-lucy
-LinkedIn: https://www.linkedin.com/in/lucy-odhiambo-65a123277
+### Professional Growth
+This project demonstrates proficiency in the full development lifecycle, including **Git version control** (branch-based development), **Backend Engineering**, and **Cloud Deployment**.
